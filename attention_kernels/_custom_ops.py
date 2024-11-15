@@ -1,6 +1,8 @@
 from typing import Optional
 import torch
 
+import attention_kernels._attention_kernels
+
 
 # page attention ops
 def paged_attention_v1(

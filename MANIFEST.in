@@ -1,0 +1,10 @@
+include LICENSE
+include README.md
+include pyproject.toml
+include setup.py
+include CMakeLists.txt
+include cmake/*.cmake
+include cmake/*.py
+include envs.py
+exclude MANIFEST.in
+recursive-include csrc *.cpp *.cu *.h *.cuh *.hpp

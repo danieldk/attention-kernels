@@ -21,10 +21,13 @@ TORCH_LIBRARY_EXPAND(TORCH_EXTENSION_NAME, ops) {
   ops.def(
       "paged_attention_v1("
       "    Tensor! out, Tensor query, Tensor key_cache,"
-      "    Tensor value_cache, Tensor head_mapping, float scale,"
-      "    Tensor block_tables, Tensor context_lens, int block_size,"
+      "    Tensor value_cache, int num_kv_heads, float scale,"
+      "    Tensor block_tables, Tensor seq_lens, int block_size,"
       "    int max_seq_len, Tensor? alibi_slopes,"
-      "    str kv_cache_dtype, float kv_scale) -> ()");
+      "    str kv_cache_dtype, float k_scale, float v_scale,"
+      "    int tp_rank, int blocksparse_local_blocks,"
+      "    int blocksparse_vert_stride, int blocksparse_block_size,"
+      "    int blocksparse_head_sliding_step) -> ()");
   ops.impl("paged_attention_v1", torch::kCUDA, &paged_attention_v1);
 
   // PagedAttention V2.
@@ -32,10 +35,13 @@ TORCH_LIBRARY_EXPAND(TORCH_EXTENSION_NAME, ops) {
       "paged_attention_v2("
       "    Tensor! out, Tensor! exp_sums, Tensor! max_logits,"
       "    Tensor! tmp_out, Tensor query, Tensor key_cache,"
-      "    Tensor value_cache, Tensor head_mapping, float scale,"
-      "    Tensor block_tables, Tensor context_lens, int block_size,"
-      "    int max_context_len, Tensor? alibi_slopes,"
-      "    str kv_cache_dtype, float kv_scale) -> ()");
+      "    Tensor value_cache, int num_kv_heads, float scale,"
+      "    Tensor block_tables, Tensor seq_lens, int block_size,"
+      "    int max_seq_len, Tensor? alibi_slopes,"
+      "    str kv_cache_dtype, float k_scale, float v_scale,"
+      "    int tp_rank, int blocksparse_local_blocks,"
+      "    int blocksparse_vert_stride, int blocksparse_block_size,"
+      "    int blocksparse_head_sliding_step) -> ()");
   ops.impl("paged_attention_v2", torch::kCUDA, &paged_attention_v2);
 
   // Reshape the key and value tensors and cache them.
@@ -44,7 +50,7 @@ TORCH_LIBRARY_EXPAND(TORCH_EXTENSION_NAME, ops) {
       "                  Tensor! key_cache, Tensor! value_cache,"
       "                  Tensor slot_mapping,"
       "                  str kv_cache_dtype,"
-      "                  float kv_scale) -> ()");
+      "                  float k_scale, float v_scale) -> ()");
   ops.impl("reshape_and_cache", torch::kCUDA, &reshape_and_cache);
 }
 

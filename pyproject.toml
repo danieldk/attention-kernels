@@ -1,7 +1,7 @@
 [project]
 name = "attention-kernels"
 description = "Attention kernels"
-version = "0.1.1"
+version = "0.2.0"
 readme = "README.md"
 authors = [{ name = "Daniël de Kok", email = "me@danieldk.eu" }]
 requires-python = ">=3.8"
